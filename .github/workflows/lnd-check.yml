@@ -1,0 +1,15 @@
+name: lnd-check
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 tools/pruebas_v12.py
+      - run: python3 tools/lnd_check_v12.py --estricto examples/*/*.lnd docs/lnd/*/*.lnd
+      - run: python3 tools/lnd_keys.py --verificar examples/*/*.lnd docs/lnd/*/*.lnd

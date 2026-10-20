@@ -1,0 +1,7 @@
+LANDDY .lnd · format specification and reference tools (lnd-format 0.9.2)
+Copyright 2026 vikingux and the LANDDY .lnd contributors
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+It covers the specification in spec/ and docs/lnd/, the reserved-word table
+tools/keywords.json, the parser, the validator, the key converter, the tests
+and the examples.

@@ -1,0 +1,1214 @@
+{
+ "version": "1.2",
+ "descripcion": "Palabras reservadas de LANDDY .lnd. Id canónico = columna en. Lo leen lnd_check, lnd_keys y render-v2. No traducir ids de bloque ni @(id).",
+ "idiomas": {
+  "es": {
+   "estado": "estable",
+   "nombre": "español"
+  },
+  "en": {
+   "estado": "estable",
+   "nombre": "English"
+  },
+  "zh": {
+   "estado": "provisional",
+   "nombre": "简体中文 (zh-CN)",
+   "nota": "Traducción automática sin revisión nativa. zh-CN provisional: las correcciones nunca romperán archivos existentes; el término viejo pasa a aliases_legacy.zh (LND-KEY-003, info) y `lnd_keys.py --migrar` lo reescribe."
+  }
+ },
+ "reglas": {
+  "aliases": "otras grafías aceptadas sin aviso (es: nombres de la tabla §7.3 cuando el 1.1 usaba la forma inglesa)",
+  "aliases_legacy": "términos renombrados: se aceptan con info LND-KEY-003; `lnd_keys.py --migrar` los actualiza",
+  "puntuacion_zh": "en zh se aceptan «：» por «:» y «＠» por «@»; el formateador las conserva en zh"
+ },
+ "puntuacion_zh": {
+  "：": ":",
+  "＠": "@"
+ },
+ "bloques": {
+  "note": {
+   "en": "note",
+   "es": "nota",
+   "zh": "备注",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": [
+     "注释"
+    ]
+   },
+   "revision_zh": "2026-10-20"
+  },
+  "claim": {
+   "en": "claim",
+   "es": "afirmacion",
+   "zh": "断言",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "task": {
+   "en": "task",
+   "es": "tarea",
+   "zh": "任务",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "source": {
+   "en": "source",
+   "es": "fuente",
+   "zh": "来源",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "action": {
+   "en": "action",
+   "es": "accion",
+   "zh": "操作",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "decision": {
+   "en": "decision",
+   "es": "decision",
+   "zh": "决策",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "board": {
+   "en": "board",
+   "es": "tablero",
+   "zh": "看板",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "files": {
+   "en": "files",
+   "es": "archivos",
+   "zh": "文件列表",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "moved": {
+   "en": "moved",
+   "es": "movido",
+   "zh": "已移动",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "experience": {
+   "en": "experience",
+   "es": "experiencia",
+   "zh": "经验",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "heading": {
+   "en": "heading",
+   "es": "heading",
+   "zh": "章节",
+   "aliases": {
+    "es": [
+     "encabezado"
+    ]
+   },
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "table": {
+   "en": "table",
+   "es": "table",
+   "zh": "表格",
+   "aliases": {
+    "es": [
+     "tabla"
+    ]
+   },
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "code": {
+   "en": "code",
+   "es": "code",
+   "zh": "代码",
+   "aliases": {
+    "es": [
+     "codigo"
+    ]
+   },
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "features": {
+   "en": "features",
+   "es": "features",
+   "zh": "功能",
+   "aliases": {
+    "es": [
+     "caracteristicas"
+    ]
+   },
+   "aliases_legacy": {
+    "zh": [
+     "特性"
+    ]
+   },
+   "revision_zh": "2026-10-20"
+  },
+  "stat": {
+   "en": "stat",
+   "es": "stat",
+   "zh": "指标",
+   "aliases": {
+    "es": [
+     "dato"
+    ]
+   },
+   "aliases_legacy": {
+    "zh": [
+     "统计"
+    ]
+   },
+   "revision_zh": "2026-10-20"
+  },
+  "image": {
+   "en": "image",
+   "es": "image",
+   "zh": "图片",
+   "aliases": {
+    "es": [
+     "imagen"
+    ]
+   },
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "iframe": {
+   "en": "iframe",
+   "es": "iframe",
+   "zh": "嵌入",
+   "aliases": {
+    "es": [
+     "incrustado"
+    ]
+   },
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "stream": {
+   "en": "stream",
+   "es": "stream",
+   "zh": "直播流",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "playlist": {
+   "en": "playlist",
+   "es": "playlist",
+   "zh": "播放列表",
+   "aliases": {
+    "es": [
+     "lista_reproduccion"
+    ]
+   },
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "repo": {
+   "en": "repo",
+   "es": "repo",
+   "zh": "仓库",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "issue": {
+   "en": "issue",
+   "es": "issue",
+   "zh": "议题",
+   "aliases": {
+    "es": [
+     "incidencia"
+    ]
+   },
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "ascii": {
+   "en": "ascii",
+   "es": "ascii",
+   "zh": "字符画",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": [
+     "字符图"
+    ]
+   },
+   "revision_zh": "2026-10-20"
+  },
+  "wireframe": {
+   "en": "wireframe",
+   "es": "wireframe",
+   "zh": "线框图",
+   "aliases": {
+    "es": [
+     "wiref"
+    ]
+   },
+   "aliases_legacy": {
+    "zh": [
+     "线框"
+    ]
+   },
+   "revision_zh": "2026-10-20"
+  },
+  "mermaid": {
+   "en": "mermaid",
+   "es": "mermaid",
+   "zh": "mermaid",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  }
+ },
+ "campos": {
+  "id": {
+   "en": "id",
+   "es": "id",
+   "zh": "id",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "profile": {
+   "en": "profile",
+   "es": "perfil",
+   "zh": "规范版本",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": [
+     "规范"
+    ]
+   },
+   "revision_zh": "2026-10-20"
+  },
+  "keys": {
+   "en": "keys",
+   "es": "claves",
+   "zh": "键名语言",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": [
+     "键语言"
+    ]
+   },
+   "revision_zh": "2026-10-20"
+  },
+  "view": {
+   "en": "view",
+   "es": "vista",
+   "zh": "视图",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "title": {
+   "en": "title",
+   "es": "titulo",
+   "zh": "标题",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "text": {
+   "en": "text",
+   "es": "texto",
+   "zh": "文本",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "item": {
+   "en": "item",
+   "es": "item",
+   "zh": "条目",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "level": {
+   "en": "level",
+   "es": "nivel",
+   "zh": "层级",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "sub": {
+   "en": "sub",
+   "es": "sub",
+   "zh": "副项",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "type": {
+   "en": "type",
+   "es": "tipo",
+   "zh": "类型",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "source": {
+   "en": "source",
+   "es": "fuente",
+   "zh": "来源",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "status": {
+   "en": "status",
+   "es": "estado",
+   "zh": "状态",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "certainty": {
+   "en": "certainty",
+   "es": "certeza",
+   "zh": "确定性",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "icon": {
+   "en": "icon",
+   "es": "icono",
+   "zh": "图标",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "criterion": {
+   "en": "criterion",
+   "es": "criterio",
+   "zh": "标准",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": [
+     "准则"
+    ]
+   },
+   "revision_zh": "2026-10-20"
+  },
+  "weight": {
+   "en": "weight",
+   "es": "peso",
+   "zh": "权重",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "date": {
+   "en": "date",
+   "es": "fecha",
+   "zh": "日期",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "depends_on": {
+   "en": "depends_on",
+   "es": "depende",
+   "zh": "依赖",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "value": {
+   "en": "value",
+   "es": "valor",
+   "zh": "值",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "owner": {
+   "en": "owner",
+   "es": "responsable",
+   "zh": "负责人",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "priority": {
+   "en": "priority",
+   "es": "prioridad",
+   "zh": "优先级",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "code_lang": {
+   "en": "code_lang",
+   "es": "lenguaje",
+   "zh": "编程语言",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "locale": {
+   "en": "locale",
+   "es": "idioma",
+   "zh": "语种",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "phase": {
+   "en": "phase",
+   "es": "fase",
+   "zh": "阶段",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "label": {
+   "en": "label",
+   "es": "etiqueta",
+   "zh": "标签",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "verification": {
+   "en": "verification",
+   "es": "verificacion",
+   "zh": "验证",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "url": {
+   "en": "url",
+   "es": "url",
+   "zh": "网址",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "uri": {
+   "en": "uri",
+   "es": "uri",
+   "zh": "uri",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "order": {
+   "en": "order",
+   "es": "orden",
+   "zh": "顺序",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "duration": {
+   "en": "duration",
+   "es": "duracion",
+   "zh": "时长",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "column": {
+   "en": "column",
+   "es": "columna",
+   "zh": "列",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "rollback": {
+   "en": "rollback",
+   "es": "rollback",
+   "zh": "回滚",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "question": {
+   "en": "question",
+   "es": "pregunta",
+   "zh": "问题",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "options": {
+   "en": "options",
+   "es": "opciones",
+   "zh": "选项",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "chosen": {
+   "en": "chosen",
+   "es": "elegida",
+   "zh": "选定",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "score": {
+   "en": "score",
+   "es": "puntaje",
+   "zh": "得分",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "reopen_if": {
+   "en": "reopen_if",
+   "es": "reabrir_si",
+   "zh": "重开条件",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "file": {
+   "en": "file",
+   "es": "archivo",
+   "zh": "文件",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "pos": {
+   "en": "pos",
+   "es": "pos",
+   "zh": "位置",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "name": {
+   "en": "name",
+   "es": "nombre",
+   "zh": "名称",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "license": {
+   "en": "license",
+   "es": "licencia",
+   "zh": "许可证",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "done": {
+   "en": "done",
+   "es": "hecho",
+   "zh": "完成",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "generated_by": {
+   "en": "generated_by",
+   "es": "generado_por",
+   "zh": "生成者",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "cache": {
+   "en": "cache",
+   "es": "cache",
+   "zh": "缓存",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "alt": {
+   "en": "alt",
+   "es": "alt",
+   "zh": "替代文本",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "hash": {
+   "en": "hash",
+   "es": "hash",
+   "zh": "哈希",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "rel": {
+   "en": "rel",
+   "es": "rel",
+   "zh": "关系",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "src": {
+   "en": "src",
+   "es": "src",
+   "zh": "src",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "moved_to": {
+   "en": "moved_to",
+   "es": "movido_a",
+   "zh": "移至",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "lesson": {
+   "en": "lesson",
+   "es": "leccion",
+   "zh": "教训",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": [
+     "经验教训"
+    ]
+   },
+   "revision_zh": "2026-10-20"
+  },
+  "applies_to": {
+   "en": "applies_to",
+   "es": "aplica_a",
+   "zh": "适用于",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "origin": {
+   "en": "origin",
+   "es": "origen",
+   "zh": "出处",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "uses": {
+   "en": "uses",
+   "es": "usos",
+   "zh": "使用次数",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "replaces": {
+   "en": "replaces",
+   "es": "reemplaza",
+   "zh": "取代",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "confidence": {
+   "en": "confidence",
+   "es": "confianza",
+   "zh": "置信度",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "candidates": {
+   "en": "candidates",
+   "es": "candidatas",
+   "zh": "候选集",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "new_path": {
+   "en": "new_path",
+   "es": "ruta_nueva",
+   "zh": "新路径",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "extension": "propuesta fuera de §7.3 (falta aprobar)"
+  },
+  "version": {
+   "en": "version",
+   "es": "version",
+   "zh": "版本",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "extension": "propuesta fuera de §7.3 (falta aprobar)"
+  }
+ },
+ "cabecera": {
+  "profile": {
+   "en": "profile",
+   "es": "perfil",
+   "zh": "规范版本",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": [
+     "规范"
+    ]
+   },
+   "revision_zh": "2026-10-20"
+  },
+  "keys": {
+   "en": "keys",
+   "es": "claves",
+   "zh": "键名语言",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": [
+     "键语言"
+    ]
+   },
+   "revision_zh": "2026-10-20"
+  },
+  "scope": {
+   "en": "scope",
+   "es": "ámbito",
+   "zh": "范围",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "extension": "propuesta fuera de §7.3 (falta aprobar)"
+  },
+  "suggested_views": {
+   "en": "suggested_views",
+   "es": "vistas sugeridas",
+   "zh": "建议视图",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "extension": "propuesta fuera de §7.3 (falta aprobar)"
+  },
+  "theme": {
+   "en": "theme",
+   "es": "tema",
+   "zh": "主题",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "extension": "propuesta fuera de §7.3 (falta aprobar)"
+  },
+  "locale": {
+   "en": "locale",
+   "es": "idioma",
+   "zh": "语种",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  },
+  "related": {
+   "en": "related",
+   "es": "relacionado",
+   "zh": "相关",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "extension": "propuesta fuera de §7.3 (falta aprobar)"
+  },
+  "version": {
+   "en": "version",
+   "es": "versión",
+   "zh": "版本",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "extension": "propuesta fuera de §7.3 (falta aprobar)"
+  },
+  "translation": {
+   "en": "translation",
+   "es": "traducción",
+   "zh": "翻译",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "extension": "propuesta fuera de §7.3 (falta aprobar)"
+  },
+  "id": {
+   "en": "id",
+   "es": "id",
+   "zh": "id",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   }
+  }
+ },
+ "valores": {
+  "status": {
+   "open": {
+    "en": "open",
+    "es": "abierta",
+    "zh": "待定",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": [
+      "未决"
+     ]
+    },
+    "revision_zh": "2026-10-20"
+   },
+   "decided": {
+    "en": "decided",
+    "es": "decidida",
+    "zh": "已定",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": [
+      "已决"
+     ]
+    },
+    "revision_zh": "2026-10-20"
+   },
+   "closed": {
+    "en": "closed",
+    "es": "cerrada",
+    "zh": "已关闭",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    }
+   },
+   "abstained": {
+    "en": "abstained",
+    "es": "abstenida",
+    "zh": "弃权",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    }
+   },
+   "pending": {
+    "en": "pending",
+    "es": "pendiente",
+    "zh": "待办",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    },
+    "extension": "propuesta fuera de §7.3 (falta aprobar)"
+   },
+   "in_progress": {
+    "en": "in_progress",
+    "es": "en_curso",
+    "zh": "进行中",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    },
+    "extension": "propuesta fuera de §7.3 (falta aprobar)"
+   },
+   "done": {
+    "en": "done",
+    "es": "hecho",
+    "zh": "完成",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    },
+    "extension": "propuesta fuera de §7.3 (falta aprobar)"
+   },
+   "review": {
+    "en": "review",
+    "es": "revision",
+    "zh": "审核",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    },
+    "extension": "propuesta fuera de §7.3 (falta aprobar)"
+   }
+  },
+  "certainty": {
+   "Verified": {
+    "en": "Verified",
+    "es": "Verificado",
+    "zh": "已验证",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    }
+   },
+   "Assumed": {
+    "en": "Assumed",
+    "es": "Supuesto",
+    "zh": "假设",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    }
+   },
+   "Closed": {
+    "en": "Closed",
+    "es": "Cerrada",
+    "zh": "已结案",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": [
+      "已关闭"
+     ]
+    },
+    "revision_zh": "2026-10-20"
+   }
+  },
+  "priority": {
+   "high": {
+    "en": "high",
+    "es": "alta",
+    "zh": "高",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    }
+   },
+   "medium": {
+    "en": "medium",
+    "es": "media",
+    "zh": "中",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    }
+   },
+   "low": {
+    "en": "low",
+    "es": "baja",
+    "zh": "低",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    }
+   }
+  },
+  "type@stream": {
+   "other": {
+    "en": "other",
+    "es": "otro",
+    "zh": "其他",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    },
+    "extension": "propuesta fuera de §7.3 (falta aprobar)"
+   }
+  },
+  "rel": {
+   "next": {
+    "en": "next",
+    "es": "siguiente",
+    "zh": "下一个",
+    "aliases": {},
+    "aliases_legacy": {
+     "zh": []
+    },
+    "extension": "propuesta fuera de §7.3 (falta aprobar)"
+   }
+  }
+ },
+ "vistas": {
+  "web": {
+   "en": "web",
+   "es": "web",
+   "zh": "网页",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "rotulo": {
+    "es": "Web",
+    "en": "Web",
+    "zh": "网页"
+   }
+  },
+  "slides": {
+   "en": "slides",
+   "es": "slides",
+   "zh": "幻灯片",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "rotulo": {
+    "es": "Slides",
+    "en": "Slides",
+    "zh": "幻灯片"
+   }
+  },
+  "board": {
+   "en": "board",
+   "es": "tablero",
+   "zh": "看板",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "rotulo": {
+    "es": "Tablero",
+    "en": "Board",
+    "zh": "看板"
+   }
+  },
+  "tv": {
+   "en": "tv",
+   "es": "tv",
+   "zh": "电视",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "rotulo": {
+    "es": "TV",
+    "en": "TV",
+    "zh": "电视"
+   }
+  },
+  "map": {
+   "en": "map",
+   "es": "carta",
+   "zh": "路线图",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "rotulo": {
+    "es": "Carta",
+    "en": "Map",
+    "zh": "路线图"
+   }
+  },
+  "mission": {
+   "en": "mission",
+   "es": "misión",
+   "zh": "使命",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "rotulo": {
+    "es": "Misión",
+    "en": "Mission",
+    "zh": "使命"
+   }
+  },
+  "source": {
+   "en": "source",
+   "es": "fuente",
+   "zh": "源码",
+   "aliases": {},
+   "aliases_legacy": {
+    "zh": []
+   },
+   "rotulo": {
+    "es": "Fuente",
+    "en": "Source",
+    "zh": "源码"
+   }
+  }
+ }
+}

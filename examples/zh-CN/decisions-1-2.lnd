@@ -1,0 +1,77 @@
+# Decisions with reopen conditions (spec 1.2)
+Four decisions a team writes down once and the tools read every time. A person sets the weights and scores; the tool only adds them up. Example data.
+
+// 规范版本: lnd-1.1 · 键名语言: zh · 范围: example · 建议视图: 网页, 看板, 源码
+
+---
+
+@来源 f-interviews
+标题: Ten customer interviews, notes
+网址: https://example.org/interviews
+日期: 2026-10-12
+@@
+
+@来源 f-confidence-method
+标题: How the confidence of d-price was computed: 7 of 10 interviews chose one-time (0.7), set by a person
+日期: 2026-10-19
+@@
+
+@断言 c-one-time
+文本: Seven of ten small teams prefer a one-time payment to a subscription.
+来源: f-interviews
+确定性: 假设
+@@
+
+@决策 d-price
+问题: Which price model ships at launch?
+选项: One-time 89 · Monthly 9
+标准: Fits what customers said | 3 | 4 | 2
+标准: Predictable revenue | 2 | 2 | 4
+标准: Simple to explain | 1 | 4 | 3
+选定: One-time 89
+得分: 18/30
+候选集: One-time 89 · Monthly 9
+置信度: 0.7
+状态: 已定
+日期: 2026-10-19
+来源: @(c-one-time) · @(f-confidence-method)
+重开条件: fewer than 20 sales in the first 30 days after launch
+@@
+
+@决策 d-memory-policy
+问题: Which memory goes into the agent's context?
+选项: Rule-based ranking · Most recent first
+标准: Certainty (Verified 1, Assumed 0.5) | 4 | 5 | 2
+标准: Uses | 3 | 4 | 1
+标准: Recency | 2 | 3 | 5
+标准: Topic match (applies_to) | 1 | 4 | 2
+选定: Rule-based ranking
+状态: 已定
+日期: 2026-10-20
+重开条件: the memory-to-input ratio is above 0.5 for two weeks in a row
+@@
+
+@决策 d-next-build
+问题: What do we build first after the validator?
+选项: Context ranking · Import from chat history · Stale-memory report
+标准: Users asked for it | 3 | 5 | 3 | 2
+标准: Effort (5 = least) | 2 | 3 | 2 | 4
+标准: Unblocks the next stage | 2 | 5 | 2 | 1
+状态: 待定
+@@
+
+@决策 d-hosting
+问题: Where does the public demo run after launch?
+选项: Static host · Own server · Both
+候选集: Static host · Own server
+状态: 弃权
+重开条件: we have one week of real traffic numbers after launch
+@@
+
+@任务 t-ranking
+标题: Context ranking with a token budget
+状态: 待办
+优先级: 高
+依赖: d-next-build
+负责人: team
+@@

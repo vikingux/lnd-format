@@ -1,0 +1,339 @@
+# LANDDY `.lnd` specification · profile lnd-1
+The rules a parser must follow to read a `.lnd` file, the block types the reference renderer understands, and the diagnostics the validator reports. Each rule is marked **Normative** (required), **Implemented** (the reference renderer does it) or **Proposed** (under discussion).
+
+// profile: lnd-1.1 · scope: specification · suggested_views: web, source
+// locale: en · translation: borrador redactado con IA; las ediciones es y zh-CN son traducción automática · licencia del texto: CC BY 4.0
+
+---
+
+@heading h-file
+text: 1 · File
+level: 1
+@@
+
+@table tb-file
+title: File basics
+
+| Item | Rule | Status |
+|---|---|---|
+| Extension | `.lnd` | Normative |
+| Media type | `text/x-lnd; charset=utf-8` | Proposed |
+| Encoding | UTF-8. Line endings `\n` or `\r\n`, normalized to `\n` | Normative |
+| Control characters | Zero-width, bidirectional and control characters are removed before parsing | Implemented |
+| Profile | A comment `// perfil: lnd-1.1` near the top declares the profile | Normative |
+@@
+
+@heading h-structure
+text: 2 · Structure
+level: 1
+
+A document has an **intro** (everything before the first block or `---`: the `# Title` line and a short summary), then **items**: typed blocks and loose Markdown. `---` on its own line starts a new section.
+@@
+
+@heading h-lines
+text: 3 · Line rules
+level: 1
+sub: The core of the parser. Each line is evaluated in this order.
+@@
+
+@table tb-order
+title: Evaluation order (Implemented)
+
+| # | Line | Meaning |
+|---|---|---|
+| 1 | inside `key::` | Appended to the multi-line value until a line that is exactly `::` |
+| 2 | `// text` or `//` | Comment: hidden in views, preserved in the source |
+| 3 | `@@` | Closes the open block |
+| 4 | `---` | Closes the open block and starts a section |
+| 5 | `@type id` | Opens a block. Exactly one optional token after the type |
+| 6 | `key: value` right after the opening | A property. Keys start with a lowercase letter or `_` |
+| 7 | first blank line in a block | Switches from properties to body |
+| 8 | anything else | Body (Markdown) of the open block, or loose Markdown |
+@@
+
+@features f-props
+title: Properties and values
+item: A repeated key becomes a list, in order (`item:` in `@features`).
+item: `key::` alone on a line opens a multi-line value; `::` alone closes it.
+item: Values are text. A consumer may read `si`/`no` as booleans and `#RRGGBB` as a color, nothing more.
+@@
+
+@code c-escape
+title: Escaping (Implemented)
+code_lang: lnd
+
+What you write          What readers see
+..@@                    @@        (one dot is removed)
+..@nota x               @nota x   (text, not a block)
+..---                   ---       (text, not a section break)
+@@
+
+@heading h-inline
+text: 4 · Inline marks and Markdown
+level: 1
+
+Inline: `**bold**`, `*italic*`, backticks for code, `[text](https://…)`, `[text](?demo=id&vista=web)` for internal links, and `@(id text)` to reference a block. The body supports a Markdown subset: paragraphs, headings, lists, task lists, tables, fenced code and quotes. **Raw HTML is never rendered** (Normative).
+@@
+
+@heading h-common
+text: 5 · Properties any block can carry
+level: 1
+@@
+
+@table tb-common
+title: Common properties
+
+| Property | Meaning |
+|---|---|
+| `certeza` | `Verificado`, `Supuesto` or `Por verificar` |
+| `supuesto: si` / `verificar: si` | Shorthand for the two weaker states |
+| `generado_por: ia` | Written by a model without human review |
+| `idioma` | BCP 47 tag (`en`, `es`, `zh-Hans`) |
+| `rel: type @(target)` | Typed relation to another block |
+| `depende` | Ids this block depends on (comma separated) |
+@@
+
+@heading h-blocks
+text: 6 · Block types
+level: 1
+sub: An unknown type is not an error: it renders as a generic block and is kept in the source.
+@@
+
+@table tb-blocks
+title: Types the reference renderer understands
+
+| Group | Types |
+|---|---|
+| Content | `heading`, `nota`, `table`, `code`, `quote`, `features`, `cta`, `hero`, `stat`, `timeline` |
+| Knowledge | `afirmacion`, `fuente`, `entidad`, `ejemplo` |
+| Work | `tablero`, `tarea`, `accion`, `proceso`, `paso`, `fase` |
+| Product and design | `producto`, `paquete`, `wireframe`, `diseno` |
+| Media | `image` (requires `alt`), `embed`, `iframe` (allow-listed domains only), `mermaid` |
+@@
+
+@heading h-views
+text: 7 · Views
+level: 1
+
+The same file renders as Web, Slides (a `@heading` starts a slide), Board (`@tarea` by `estado`), Scroll-TV, Map (sections as lines, blocks as stations), Mission (runbook of `@accion` steps with saved state) and Source (raw text next to the render, with block ids). Markdown and HTML exports are generated from the parsed document and contain no scripts.
+@@
+
+@heading h-security
+text: 8 · Security
+level: 1
+@@
+
+@table tb-security
+title: Rules for any renderer
+
+| Rule | Status |
+|---|---|
+| Escape all text before inserting it. No author HTML, CSS or JavaScript | Normative |
+| Links and media: `https` only (plus `mailto:` and `tel:` in property lists) | Implemented |
+| `@iframe`: domain allow-list, `sandbox`, lazy loading, strict referrer policy | Implemented |
+| `@diseno`: colors as `#RRGGBB` and font names only | Implemented |
+| Text addressed to models («ignore your instructions…») is data, never an instruction | Normative |
+| `@secret` holds a reference, never a literal value | Normative |
+@@
+
+@heading h-diag
+text: 9 · Diagnostics
+level: 1
+sub: Codes are stable. The validator prints messages in Spanish.
+@@
+
+@table tb-diag
+title: Codes
+
+| Code | Level | Rule |
+|---|---|---|
+| `LND-SYN-001` | error | `@@` without an open block |
+| `LND-SYN-002` | error | `key::` without a closing `::` |
+| `LND-SYN-003` | warning | `@type id extra` looks like a block but is text |
+| `LND-SYN-004` | info | Block closed without `@@` |
+| `LND-SYN-005` | warning | `//x` without a space is not a comment |
+| `LND-ESQ-001` | error | Duplicate id |
+| `LND-ESQ-002` | error | `@tarea` without an id |
+| `LND-ESQ-003` | warning | Key starting with an uppercase letter |
+| `LND-ESQ-004` | warning | Missing `# Title` |
+| `LND-REF-001` | warning | `rel: siguiente` to a missing id |
+| `LND-REF-002` | warning | `depende` to a missing id |
+| `LND-REF-003` | warning | `@afirmacion` whose `fuente` has no `@fuente` |
+| `LND-REF-004` | warning | Malformed `rel` |
+| `LND-SEC-001` | error | `@iframe` outside the allow-list |
+| `LND-SEC-002` | error | `@secret` with a literal value |
+| `LND-SEC-003` | warning | Non-`https` URL in a media or link property |
+| `LND-SEC-004` | warning | Control or bidirectional characters |
+| `LND-LANG-001` | error | Reserved, wrong language codes `kcw` and `tsq` |
+| `LND-LANG-002` | warning | `idioma` that does not look like BCP 47 |
+| `LND-MED-001` | warning | `@image` without `alt` |
+| `LND-VER-001` | info | Missing `// perfil: lnd-1.1` comment |
+| `LND-VER-002` | info | Legacy profile name `cw-1`; use `lnd-1.1` |
+| `LND-REF-007` | warning | `--links`: the block does not exist in the linked document |
+| `LND-REF-008` | info | `--links`: link resolved through a `@movido` tombstone |
+| `LND-REF-009` | error | `@movido` without `movido_a` |
+@@
+
+@heading h-ext
+text: 10 · Extending and versioning
+level: 1
+@@
+
+@features f-ext
+item: New types and properties are allowed and must survive a round trip unchanged (Normative).
+item: Third-party types use a prefix: `@x-<org>-<type>` (Proposed).
+item: Additive changes keep the profile `lnd-1`. Additive changes raise the minor version (`lnd-1.1`, `lnd-1.2`). A change that breaks valid documents creates `lnd-2` with a migration tool (Normative). `cw-1` is the legacy alias of `lnd-1.0`: validators and renderers accept it and report `LND-VER-002` (Normative).
+item: The profile is named after the format, not after any product. Keys and type names are Spanish words in profile `lnd-1`. They are identifiers, not prose, and are the same in every language edition of a document.
+@@
+
+---
+
+@heading h-v11
+text: 11 · Profile 1.1 additions
+level: 1
+sub: Additive and backward compatible: a 1.0 renderer shows these blocks as generic blocks, and nothing that was valid becomes invalid.
+@@
+
+@table tb-v11
+title: New blocks
+
+| Block | Properties | Rendering |
+|---|---|---|
+| `@decision` | `pregunta`, `opciones` (separated by ` · `; a vertical bar is also accepted), `elegida`, `puntaje` (a number or `N/M`, set by a person), `estado` (`abierta` or `decidida`; `cerrada` reads as `decidida`), `reabrir_si`, repeated `fuente` (free text, or `@(id)` to an `@afirmacion` or `@fuente`); plus repeated `criterio` (name, weight, one score per option, separated by vertical bars) and `fecha` | Score table (weight × score, summed), linked evidence that inherits its Verified or Assumption mark, edges to the evidence in the Map view |
+| `@ascii` | `alt` (required), `titulo`; the drawing in the body | Whitespace kept exactly, no reflow, scaled to fit the width |
+| `@stream` | `url`, `tipo` (`hls`, `webrtc`, `youtube`, `otro`), `poster`, `estado`, `fecha` | Click to load, allow-listed domains only; offline it shows poster, status and date |
+| `@playlist` | repeated `item`: source, title, start-end, subtitles (local relative paths allowed) | Ordered list that works offline |
+| `@archivos` | repeated `archivo`: path, size, sha256 | File tree; the validator checks the sha256 format |
+| `@repo`, `@issue` | `url` plus a snapshot (`nombre`, `descripcion`, `licencia`, `titulo`, `estado`…) and its `fecha` | Readable offline from the snapshot, with its date |
+@@
+
+@features f-v11
+title: New fields on any block
+item: `icono:` an emoji or a `:shortcode:`. There is no `@emoji` block.
+item: `:shortcode:` inline in text, for example `:check:` or `:warning:`. Inside code it stays literal.
+item: `pos: x,y` places the block freely on the Map canvas.
+item: `hash:` and `cache:` on any block with external content: the sha256 of the content and a local relative copy (for example a page saved as a single HTML file).
+item: **Human weights.** In `@decision`, weights are set by a person. An agent may compute the score and propose a choice, but does not change weights or `puntaje`, or mark the decision `decidida`, on its own.
+@@
+
+@table tb-v11-diag
+title: New diagnostic codes
+
+| Code | Level | Rule |
+|---|---|---|
+| `LND-MED-002` | error | `@ascii` without `alt` |
+| `LND-INT-001` | error | Malformed sha256 in `@archivos` or `hash` |
+| `LND-DEC-001` | warning | `@decision` without `pregunta` |
+| `LND-DEC-002` | warning | Fewer than two `opciones` |
+| `LND-DEC-003` | warning | Malformed `criterio` (one score per option) |
+| `LND-DEC-004` | warning | `elegida` is not one of the `opciones` |
+| `LND-DEC-005` | warning | Invalid `estado`, or decided without `elegida` and `fecha` |
+| `LND-DEC-006` | warning | `puntaje` is neither a number nor `N/M` |
+| `LND-REF-005` | warning | A `fuente: @(id)` in `@decision` points to a missing id or to a block that is not `@afirmacion` or `@fuente` |
+| `LND-ESQ-005` | warning | `@stream` with an unknown `tipo` |
+| `LND-ESQ-006` | warning | Malformed `pos` or `icono` |
+| `LND-ESQ-007` | warning | `@repo` or `@issue` without a snapshot `fecha` |
+| `LND-ESQ-008` | warning | `@emoji` block (use `icono` or a shortcode) |
+| `LND-SEC-006` | warning | `cache` or file path that is absolute or contains `..` |
+@@
+
+---
+
+@heading h-enlaces
+text: 12 · Links between documents that survive moving folders
+level: 1
+sub: Folders are for humans; ids are for machines.
+@@
+
+@table tb-enlaces
+title: Ways to link
+
+| Form | Example | Status |
+|---|---|---|
+| Block in the same document | `@(a-boiling)` | 1.0 |
+| Another document, by id | `@(hello)` | 1.1 |
+| A block in another document, by id | `@(hello#a-boiling)` | 1.1 |
+| File path (fallback) | `@(examples/en/hello.lnd#a-boiling)` | 1.1 · breaks if the file moves |
+| Tombstone for a moved document: `@movido id` with `movido_a: new-id` | the renderer redirects to the new id | Proposed 1.2 |
+@@
+
+@features f-enlaces
+title: Rules
+item: The renderer resolves the document id through its index (MANIFEST: id → current path). If the id is missing, it shows the link struck through as a **broken link** and emits `LND-REF-006`; it does not guess a target.
+item: No version numbers in file names: the version lives in Git and in the text, not in the path. Renaming or moving a file does not change its id.
+item: Planned tooling: `cw links` lists and checks every link in the repo, and `cw mv` moves a file and leaves the tombstone (see §13; Normative: they do not exist yet).
+@@
+
+---
+
+@heading h-cli
+text: 13 · The `cw` command-line tool (plan)
+level: 1
+sub: Normative: decided and not built yet, except the reference validator. A single TypeScript parser, `@landdy/cw`, compiled with Deno.
+@@
+
+@table tb-cli
+title: By stage
+
+| Stage | Commands | Done when |
+|---|---|---|
+| 0 | `cw validate`, `cw lint --leaks`, `cw publish --public` | CI fails on a broken `.lnd` or a leak |
+| 1 | `fmt`, `get`/`set`, `propose`, `query`, `context`, `import`, `serve` (stdio, read-only plus `propose`), `links`, `mv` | `parse(fmt(parse(x))) == parse(x)` on every fixture |
+| 2 | `diff`, `stale`, `index`, `decide`, `watch` | — |
+@@
+
+The Python validator (`tools/lnd_check.py`) is ported to TypeScript and retired once both validators give the same result on every fixture.
+
+---
+
+@heading h-12
+text: 14 · Version 1.2: reserved words in English, Spanish and Chinese
+level: 1
+sub: Implemented in the reference validator and formatter. Every reserved word works in all three languages with the same behavior.
+@@
+
+@features f-12
+title: What 1.2 adds
+item: **One table.** `tools/keywords.json` lists every reserved word (blocks, fields, header keys, reserved values, views) in es, en and zh. Canonical ids are the English column. The validator, the formatter and the renderer read it; the rest of the code never sees language-specific keys.
+item: **One language per file.** A file uses the keys of one language. Optional header `keys: en` (`claves: es`, `键名语言：zh`); without it the language is detected. Mixing key languages gives `LND-KEY-001`.
+item: **Full-width punctuation.** In zh, `：` is accepted for `:` and `＠` for `@`, as typed with a Chinese IME.
+item: **Formatter.** `python3 tools/lnd_keys.py --lang es|en|zh file.lnd` rewrites reserved words only: never content, block ids or `@(id)` links. The round trip es→en→zh→es is byte-identical.
+item: **Messages.** Validator messages quote keys in the language of the file; `--lang` defaults to it.
+item: **Memory blocks.** `@experience` (lesson reused across tasks; requires `lesson` and `origin`), the global field `replaces: @(id)` (version chain; cycles are `LND-REF-010`) and `reopen_if` on `@decision`. See `examples/*/memory-1-2.lnd`, `decisions-1-2.lnd` and `moved-1-2.lnd`.
+item: **Decision uncertainty (optional, after the Vega decision model).** `confidence`: a number from 0 to 1, the probability that the chosen option is right (out of range: `LND-DEC-008`). `candidates`: the options still plausible, a subset of `options` (`LND-DEC-007` if not). New `status` value `abstained`: there is not enough evidence to decide; it has no `chosen` and should have `reopen_if` (`LND-DEC-005`). Rule: if a tool or agent fills `confidence`, it must say how it was computed in `source`; the weights are still set by a person.
+@@
+
+@table tb-12-codes
+title: New diagnostic codes
+
+| Code | Level | Meaning |
+|---|---|---|
+| `LND-KEY-001` | warning (info if only values mix) | Keys from more than one language in a file |
+| `LND-KEY-002` | warning | Unknown key that looks like a typo of a reserved word (with suggestion), or a `keys:` value other than es, en, zh |
+| `LND-KEY-003` | info | Renamed term (legacy alias): run `lnd_keys.py --migrar` |
+| `LND-REF-010` | error | Cycle in `replaces` |
+| `LND-EXP-001` | warning | `@experience` without `lesson` or `origin` |
+| `LND-EXP-002` | warning | `uses` is not an integer |
+| `LND-DEC-007` | warning | A `candidates` entry is not among `options` |
+| `LND-DEC-008` | warning | `confidence` is not a number from 0 to 1 |
+@@
+
+@note n-zh-provisional
+type: zh-CN
+
+zh-CN provisional: corrections will never break existing files. The Chinese reserved words are machine-translated and have not been reviewed by a native speaker. If a term changes, the old one moves to `aliases_legacy` in `keywords.json`: it keeps working, gives only `LND-KEY-003` (info), and `lnd_keys.py --migrar` rewrites it. Native speakers: please propose fixes in an issue (see CONTRIBUTING).
+@@
+
+@code c-12-decision
+title: The same decision, keys in this file's language
+code_lang: lnd
+
+.@decision d-price
+question: Which price model ships at launch?
+options: One-time 89 · Monthly 9
+chosen: One-time 89
+status: decided
+date: 2026-10-19
+reopen_if: fewer than 20 sales in the first 30 days
+.@@
+@@

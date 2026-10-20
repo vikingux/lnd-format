@@ -1,0 +1,43 @@
+# Runbook · levantar un servidor local de prueba
+Tres pasos con verificación y rollback. Ábrelo en la vista Misión: cada paso se puede marcar y el estado queda guardado en el navegador.
+
+// perfil: lnd-1.1 · ámbito: ejemplo · vistas sugeridas: mision, web
+
+---
+
+@accion a-1
+orden: 1
+titulo: Crear una carpeta de trabajo
+duracion: 1 min
+verificacion: la carpeta existe y está vacía
+rollback: borrar la carpeta
+
+```
+mkdir -p ~/lnd-demo && cd ~/lnd-demo
+```
+@@
+
+@accion a-2
+orden: 2
+titulo: Copiar el renderer y un ejemplo
+depende: a-1
+duracion: 1 min
+verificacion: los dos archivos están en la carpeta
+
+```
+cp renderer/render.html examples/es/hello.lnd ~/lnd-demo/
+```
+@@
+
+@accion a-3
+orden: 3
+titulo: Servir la carpeta en localhost
+depende: a-2
+duracion: 1 min
+verificacion: la página abre y la consola no muestra errores
+rollback: detener el servidor con Ctrl C
+
+```
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+@@

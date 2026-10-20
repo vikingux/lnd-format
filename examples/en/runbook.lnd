@@ -1,0 +1,43 @@
+# Runbook · start a local test server
+Three steps with verification and rollback. Open it in the Mission view: each step can be checked off and the state is saved in the browser.
+
+// profile: lnd-1.1 · scope: example · suggested_views: mision, web
+
+---
+
+@action a-1
+order: 1
+title: Create a working folder
+duration: 1 min
+verification: the folder exists and is empty
+rollback: delete the folder
+
+```
+mkdir -p ~/lnd-demo && cd ~/lnd-demo
+```
+@@
+
+@action a-2
+order: 2
+title: Copy the renderer and an example
+depends_on: a-1
+duration: 1 min
+verification: both files are in the folder
+
+```
+cp renderer/render.html examples/en/hello.lnd ~/lnd-demo/
+```
+@@
+
+@action a-3
+order: 3
+title: Serve the folder on localhost
+depends_on: a-2
+duration: 1 min
+verification: the page opens and the console shows no errors
+rollback: stop the server with Ctrl C
+
+```
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+@@

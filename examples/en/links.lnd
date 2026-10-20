@@ -1,0 +1,24 @@
+# Links by id
+Links that point to documents and blocks by id, not by path. In this renderer each example has the id `<language>-<name>`, so they still work if the files move.
+
+// profile: lnd-1.1 · scope: example · suggested_views: web, map
+
+@heading h-claim
+text: A claim in another document
+level: 2
+@@
+
+The claim about boiling water lives in @(en-hello#a-boiling the hello example); its source is @(en-hello#f-textbook).
+
+@heading h-task
+text: A task on the release board
+level: 2
+@@
+
+Before tagging, check @(en-board#t-release the release task) and the whole @(en-board board).
+
+@note n-roto
+type: aviso
+
+@(en-missing#x this document is not in the index) is shown struck through and flagged `LND-REF-006`. This line is here on purpose.
+@@

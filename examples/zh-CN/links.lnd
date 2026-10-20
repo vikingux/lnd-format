@@ -1,0 +1,24 @@
+# 按 id 链接
+按 id 而不是按路径指向文档和块的链接。在本渲染器中，每个示例的 id 为 `<语言>-<名称>`，文件移动后链接依然有效。
+
+// 规范版本: lnd-1.1 · 范围: example · 建议视图: 网页, 路线图
+
+@章节 h-claim
+文本: 另一文档中的论断
+层级: 2
+@@
+
+关于沸水的论断位于 @(zh-cn-hello#a-boiling hello 示例)；其来源是 @(zh-cn-hello#f-textbook)。
+
+@章节 h-task
+文本: 发布看板上的任务
+层级: 2
+@@
+
+打标签之前，先检查 @(zh-cn-board#t-release 发布任务) 和整个 @(zh-cn-board 看板)。
+
+@备注 n-roto
+类型: aviso
+
+@(zh-cn-missing#x 此文档不在索引中) 会以删除线显示并标记 `LND-REF-006`。这一行是故意保留的。
+@@

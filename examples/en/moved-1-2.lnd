@@ -1,0 +1,15 @@
+# Moved: Reusable memory notes
+This document changed path. Its id stays the same.
+
+// profile: lnd-1.1 · keys: en · scope: tombstone · suggested_views: web
+
+---
+
+@moved m-memory-notes
+moved_to: memory-1-2
+new_path: memory-1-2.lnd
+version: 1.2
+date: 2026-10-20
+
+Open [Reusable memory](?file=memory-1-2.lnd) at its new path.
+@@

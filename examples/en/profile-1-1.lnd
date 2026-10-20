@@ -1,0 +1,109 @@
+# Profile 1.1 · every new block in one file
+A decision with weighted criteria and evidence, an ASCII diagram, a stream, a playlist, a file list, a repository and an issue snapshot, plus the new global fields `icono`, `pos`, `hash` and `cache`. Open it in Web, Map and Source. :bulb:
+
+// profile: lnd-1.1 · scope: example · suggested_views: web, map, source
+// perfil 1.1: additive; an older renderer shows these blocks as generic blocks
+
+---
+
+@heading h-decision
+text: A decision with evidence
+level: 1
+icon: :scale:
+@@
+
+@decision d-diagrams
+title: Diagram format for the docs
+question: Which format do we use for diagrams in the docs?
+options: Mermaid · ASCII · PNG
+criterion: Diffable in Git | 3 | 3 | 3 | 0
+criterion: Readable without a renderer | 2 | 1 | 3 | 3
+criterion: Renders as a real diagram | 2 | 3 | 1 | 3
+source: @(a-diff)
+source: @(a-offline)
+chosen: Mermaid
+status: decided
+date: 2026-10-19
+reopen_if: the offline renderer can no longer draw Mermaid
+icon: :scale:
+pos: 420,560
+
+Weights were set by a person. An agent computed the score and proposed the choice; the person approved it.
+@@
+
+@claim a-diff
+text: Mermaid and ASCII are plain text, so a pull request shows the exact change.
+certainty: Verified
+source: f-git
+@@
+
+@claim a-offline
+text: Most readers will open the docs with a Mermaid-capable renderer.
+certainty: Assumed
+@@
+
+@source f-git
+title: Any `git diff` of a text file
+type: observación
+@@
+
+---
+
+@heading h-media
+text: Text drawings, streams and media
+level: 1
+@@
+
+@ascii as-flow
+title: Write, validate, review
+alt: Three boxes in a row joined by arrows: write .lnd, then lnd_check, then pull request.
+
++-----------+     +-----------+     +--------------+
+| write     | --> | lnd_check | --> | pull request |
+| .lnd      |     | 0 errors  |     | human review |
++-----------+     +-----------+     +--------------+
+@@
+
+@stream st-live
+title: Live demo (example)
+url: https://example.org/live/index.m3u8
+type: hls
+status: not live
+date: 2026-10-19
+icon: :video:
+@@
+
+@playlist pl-1
+title: Local recordings
+item: media/intro.mp4 | Introduction | 00:00-01:30 | media/intro.vtt
+item: media/views.mp4 | Nine views of one file | 00:00-02:10
+@@
+
+---
+
+@heading h-files
+text: Files, repositories and issues
+level: 1
+@@
+
+@files ar-1
+title: Files referenced by this example
+file: LICENSE | 11358 B | cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+file: examples/en/hello.lnd | 614 B | 75d7e621232daaa3238b73a2c94d797d61d5d1ecbe5b4b345cb578124bd107b1
+@@
+
+@repo rp-mermaid
+url: https://github.com/mermaid-js/mermaid
+name: mermaid-js/mermaid
+license: MIT
+date: 2026-10-19
+icon: :link:
+@@
+
+@issue is-1
+url: https://example.org/issues/1
+title: Example issue (fictional)
+status: open
+date: 2026-10-19
+cache: cache/issue-1.html
+@@

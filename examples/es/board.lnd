@@ -1,0 +1,49 @@
+# Tablero de la versión
+Un tablero kanban chico. Ábrelo en la vista Tablero, arrastra una tarjeta y después abre Fuente para ver cómo cambia la línea `estado`.
+
+// perfil: lnd-1.1 · ámbito: ejemplo · vistas sugeridas: tablero, carta
+
+---
+
+@tablero tb-release
+titulo: Primera versión
+columna: pendiente · Pendiente
+columna: en_curso · En curso · wip 2
+columna: hecho · Hecho
+hecho: hecho
+@@
+
+@tarea t-parser
+titulo: Escribir el parser
+estado: hecho
+prioridad: P0
+fase: Semana 1
+responsable: dev
+@@
+
+@tarea t-fixtures
+titulo: Agregar fixtures inválidos
+estado: en_curso
+prioridad: P1
+fase: Semana 1
+responsable: dev
+depende: t-parser
+@@
+
+@tarea t-docs
+titulo: Documentar los tipos de bloque
+estado: pendiente
+prioridad: P1
+fase: Semana 2
+responsable: redacción
+depende: t-parser
+@@
+
+@tarea t-release
+titulo: Etiquetar la primera versión
+estado: pendiente
+prioridad: P0
+fase: Semana 2
+responsable: mantenimiento
+depende: t-fixtures, t-docs
+@@

@@ -1,0 +1,24 @@
+# Enlaces por id
+Enlaces que apuntan a documentos y bloques por id, no por ruta. En este renderer cada ejemplo tiene el id `<idioma>-<nombre>`, así que siguen funcionando si se mueven los archivos.
+
+// perfil: lnd-1.1 · ámbito: example · vistas sugeridas: web, carta
+
+@heading h-claim
+texto: Una afirmación en otro documento
+nivel: 2
+@@
+
+La afirmación sobre el agua hirviendo vive en @(es-hello#a-boiling el ejemplo hello); su fuente es @(es-hello#f-textbook).
+
+@heading h-task
+texto: Una tarea del tablero de versión
+nivel: 2
+@@
+
+Antes de etiquetar, revisa @(es-board#t-release la tarea de publicación) y el @(es-board tablero completo).
+
+@nota n-roto
+tipo: aviso
+
+@(es-missing#x este documento no está en el índice) se muestra tachado y marcado `LND-REF-006`. Esta línea está a propósito.
+@@

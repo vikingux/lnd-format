@@ -1,0 +1,57 @@
+# Reusable memory (spec 1.2)
+A lesson learned once, kept apart from the fact that produced it: one from deploying software, one from buying from a supplier. Example data; nothing here was measured.
+
+// profile: lnd-1.1 · keys: en · scope: example · suggested_views: web, map, source
+
+---
+
+@source f-deploy-log
+title: Deploy log, staging, week 3
+url: https://example.org/deploy-log
+date: 2026-10-14
+@@
+
+@claim c-dns
+text: The proxy error came from DNS that had not propagated yet.
+source: f-deploy-log
+certainty: Verified
+@@
+
+@experience x-dns-first-v1
+lesson: Before debugging the proxy, wait for DNS.
+origin: @(c-dns)
+applies_to: deploy, dns
+uses: 1
+status: Assumed
+@@
+
+@experience x-dns-first
+lesson::
+Before debugging the proxy, confirm that DNS has propagated: query the record
+from two networks and compare. It saved an hour in each of the last three deploys.
+::
+origin: @(c-dns)
+replaces: @(x-dns-first-v1)
+applies_to: deploy, dns, proxy
+uses: 3
+status: Verified
+@@
+
+@claim c-quote
+text: A supplier accepted a 10-day deadline by phone, then sent a written quote with 25 days and a higher price.
+source: f-purchase-notes
+certainty: Verified
+@@
+
+@source f-purchase-notes
+title: Purchase notes, printing order for a trade fair
+date: 2026-10-09
+@@
+
+@experience x-quote-in-writing
+lesson: Ask for the quote in writing, with price and delivery date, before accepting the deadline. A spoken "yes" is not a commitment.
+origin: @(c-quote)
+applies_to: sales, purchasing, paperwork
+uses: 2
+status: Verified
+@@

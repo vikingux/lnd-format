@@ -1,0 +1,77 @@
+# Decisions with reopen conditions (spec 1.2)
+Four decisions a team writes down once and the tools read every time. A person sets the weights and scores; the tool only adds them up. Example data.
+
+// perfil: lnd-1.1 · claves: es · ámbito: example · vistas sugeridas: web, tablero, fuente
+
+---
+
+@fuente f-interviews
+titulo: Ten customer interviews, notes
+url: https://example.org/interviews
+fecha: 2026-10-12
+@@
+
+@fuente f-confidence-method
+titulo: How the confidence of d-price was computed: 7 of 10 interviews chose one-time (0.7), set by a person
+fecha: 2026-10-19
+@@
+
+@afirmacion c-one-time
+texto: Seven of ten small teams prefer a one-time payment to a subscription.
+fuente: f-interviews
+certeza: Supuesto
+@@
+
+@decision d-price
+pregunta: Which price model ships at launch?
+opciones: One-time 89 · Monthly 9
+criterio: Fits what customers said | 3 | 4 | 2
+criterio: Predictable revenue | 2 | 2 | 4
+criterio: Simple to explain | 1 | 4 | 3
+elegida: One-time 89
+puntaje: 18/30
+candidatas: One-time 89 · Monthly 9
+confianza: 0.7
+estado: decidida
+fecha: 2026-10-19
+fuente: @(c-one-time) · @(f-confidence-method)
+reabrir_si: fewer than 20 sales in the first 30 days after launch
+@@
+
+@decision d-memory-policy
+pregunta: Which memory goes into the agent's context?
+opciones: Rule-based ranking · Most recent first
+criterio: Certainty (Verified 1, Assumed 0.5) | 4 | 5 | 2
+criterio: Uses | 3 | 4 | 1
+criterio: Recency | 2 | 3 | 5
+criterio: Topic match (applies_to) | 1 | 4 | 2
+elegida: Rule-based ranking
+estado: decidida
+fecha: 2026-10-20
+reabrir_si: the memory-to-input ratio is above 0.5 for two weeks in a row
+@@
+
+@decision d-next-build
+pregunta: What do we build first after the validator?
+opciones: Context ranking · Import from chat history · Stale-memory report
+criterio: Users asked for it | 3 | 5 | 3 | 2
+criterio: Effort (5 = least) | 2 | 3 | 2 | 4
+criterio: Unblocks the next stage | 2 | 5 | 2 | 1
+estado: abierta
+@@
+
+@decision d-hosting
+pregunta: Where does the public demo run after launch?
+opciones: Static host · Own server · Both
+candidatas: Static host · Own server
+estado: abstenida
+reabrir_si: we have one week of real traffic numbers after launch
+@@
+
+@tarea t-ranking
+titulo: Context ranking with a token budget
+estado: pendiente
+prioridad: alta
+depende: d-next-build
+responsable: team
+@@

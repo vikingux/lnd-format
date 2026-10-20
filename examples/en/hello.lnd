@@ -1,0 +1,28 @@
+# Hello, `.lnd`
+The smallest useful document: a title, one claim with its source, and a note. Open it in the renderer and switch between Web, Slides and Source.
+
+// profile: lnd-1.1 · scope: example · suggested_views: web, source
+
+---
+
+@heading h-1
+text: A claim with a source
+level: 1
+@@
+
+@claim a-boiling
+text: At sea level, pure water boils at 100 °C.
+certainty: Verified
+source: f-textbook
+@@
+
+@source f-textbook
+title: Any introductory chemistry textbook
+type: referencia
+@@
+
+@note n-1
+type: consejo
+
+Change `certeza` to `Supuesto` and look at the block again: the renderer shows the difference.
+@@

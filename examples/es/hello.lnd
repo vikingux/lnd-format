@@ -1,0 +1,28 @@
+# Hola, `.lnd`
+El documento útil más chico: un título, un dato con su fuente y una nota. Ábrelo en el renderer y cambia entre Web, Slides y Fuente.
+
+// perfil: lnd-1.1 · ámbito: ejemplo · vistas sugeridas: web, fuente
+
+---
+
+@heading h-1
+texto: Un dato con fuente
+nivel: 1
+@@
+
+@afirmacion a-boiling
+texto: Al nivel del mar, el agua pura hierve a 100 °C.
+certeza: Verificado
+fuente: f-textbook
+@@
+
+@fuente f-textbook
+titulo: Cualquier texto introductorio de química
+tipo: referencia
+@@
+
+@nota n-1
+tipo: consejo
+
+Cambia `certeza` a `Supuesto` y mira el bloque otra vez: el renderer muestra la diferencia.
+@@

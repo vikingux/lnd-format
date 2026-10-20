@@ -1,0 +1,57 @@
+# Reusable memory (spec 1.2)
+A lesson learned once, kept apart from the fact that produced it: one from deploying software, one from buying from a supplier. Example data; nothing here was measured.
+
+// 规范版本: lnd-1.1 · 键名语言: zh · 范围: example · 建议视图: 网页, 路线图, 源码
+
+---
+
+@来源 f-deploy-log
+标题: Deploy log, staging, week 3
+网址: https://example.org/deploy-log
+日期: 2026-10-14
+@@
+
+@断言 c-dns
+文本: The proxy error came from DNS that had not propagated yet.
+来源: f-deploy-log
+确定性: 已验证
+@@
+
+@经验 x-dns-first-v1
+教训: Before debugging the proxy, wait for DNS.
+出处: @(c-dns)
+适用于: deploy, dns
+使用次数: 1
+状态: 假设
+@@
+
+@经验 x-dns-first
+教训::
+Before debugging the proxy, confirm that DNS has propagated: query the record
+from two networks and compare. It saved an hour in each of the last three deploys.
+::
+出处: @(c-dns)
+取代: @(x-dns-first-v1)
+适用于: deploy, dns, proxy
+使用次数: 3
+状态: 已验证
+@@
+
+@断言 c-quote
+文本: A supplier accepted a 10-day deadline by phone, then sent a written quote with 25 days and a higher price.
+来源: f-purchase-notes
+确定性: 已验证
+@@
+
+@来源 f-purchase-notes
+标题: Purchase notes, printing order for a trade fair
+日期: 2026-10-09
+@@
+
+@经验 x-quote-in-writing
+教训: Ask for the quote in writing, with price and delivery date, before accepting the deadline. A spoken "yes" is not a commitment.
+出处: @(c-quote)
+适用于: sales, purchasing, paperwork
+使用次数: 2
+状态: 已验证
+@@

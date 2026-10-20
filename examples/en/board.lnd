@@ -1,0 +1,49 @@
+# Release board
+A small kanban board. Open it in the Board view, drag a card, then open Source to see the `estado` line change.
+
+// profile: lnd-1.1 · scope: example · suggested_views: board, map
+
+---
+
+@board tb-release
+title: First release
+column: pendiente · To do
+column: en_curso · In progress · wip 2
+column: hecho · Done
+done: hecho
+@@
+
+@task t-parser
+title: Write the parser
+status: done
+priority: P0
+phase: Week 1
+owner: dev
+@@
+
+@task t-fixtures
+title: Add invalid fixtures
+status: in_progress
+priority: P1
+phase: Week 1
+owner: dev
+depends_on: t-parser
+@@
+
+@task t-docs
+title: Document the block types
+status: pending
+priority: P1
+phase: Week 2
+owner: writer
+depends_on: t-parser
+@@
+
+@task t-release
+title: Tag the first release
+status: pending
+priority: P0
+phase: Week 2
+owner: maintainer
+depends_on: t-fixtures, t-docs
+@@

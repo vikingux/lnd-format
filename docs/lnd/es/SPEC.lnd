@@ -1,0 +1,339 @@
+# Especificación LANDDY `.lnd` · perfil lnd-1
+Las reglas que un parser debe seguir para leer un archivo `.lnd`, los tipos de bloque que entiende el renderer de referencia y los diagnósticos que informa el validador. Cada regla va marcada **Normativo** (obligatorio), **Implementado** (el renderer de referencia lo hace) o **Propuesto** (en discusión).
+
+// perfil: lnd-1.1 · ámbito: especificación · vistas sugeridas: web, fuente
+// idioma: es · traducción: automática (IA) desde el inglés, sin revisión humana · licencia del texto: CC BY 4.0
+
+---
+
+@heading h-file
+texto: 1 · Archivo
+nivel: 1
+@@
+
+@table tb-file
+titulo: Lo básico del archivo
+
+| Elemento | Regla | Estado |
+|---|---|---|
+| Extensión | `.lnd` | Normativo |
+| Tipo MIME | `text/x-lnd; charset=utf-8` | Propuesto |
+| Codificación | UTF-8. Fin de línea `\n` o `\r\n`, normalizado a `\n` | Normativo |
+| Caracteres de control | Los de ancho cero, bidireccionales y de control se eliminan antes de leer | Implementado |
+| Perfil | Un comentario `// perfil: lnd-1.1` cerca del inicio declara el perfil | Normativo |
+@@
+
+@heading h-structure
+texto: 2 · Estructura
+nivel: 1
+
+Un documento tiene una **intro** (todo lo que va antes del primer bloque o `---`: la línea `# Título` y un resumen corto) y después **ítems**: bloques con tipo y Markdown suelto. `---` sola en su línea abre una sección nueva.
+@@
+
+@heading h-lines
+texto: 3 · Reglas de línea
+nivel: 1
+sub: El corazón del parser. Cada línea se evalúa en este orden.
+@@
+
+@table tb-order
+titulo: Orden de evaluación (Implementado)
+
+| # | Línea | Significado |
+|---|---|---|
+| 1 | dentro de `clave::` | Se agrega al valor multilínea hasta una línea que sea exactamente `::` |
+| 2 | `// texto` o `//` | Comentario: no se ve en las vistas, se conserva en la fuente |
+| 3 | `@@` | Cierra el bloque abierto |
+| 4 | `---` | Cierra el bloque abierto y abre una sección |
+| 5 | `@tipo id` | Abre un bloque. Como mucho un token después del tipo |
+| 6 | `clave: valor` justo después de la apertura | Una propiedad. Las claves empiezan en minúscula o `_` |
+| 7 | primera línea en blanco de un bloque | Pasa de propiedades a cuerpo |
+| 8 | cualquier otra | Cuerpo (Markdown) del bloque abierto, o Markdown suelto |
+@@
+
+@features f-props
+titulo: Propiedades y valores
+item: Una clave repetida se vuelve lista, en orden (`item:` en `@features`).
+item: `clave::` sola en una línea abre un valor multilínea; `::` sola lo cierra.
+item: Los valores son texto. Quien los consume puede leer `si`/`no` como booleanos y `#RRGGBB` como color, nada más.
+@@
+
+@code c-escape
+titulo: Escape (Implementado)
+lenguaje: lnd
+
+Lo que escribes          Lo que se ve
+..@@                    @@        (se quita un punto)
+..@nota x               @nota x   (texto, no bloque)
+..---                   ---       (texto, no corte de sección)
+@@
+
+@heading h-inline
+texto: 4 · Marcas en línea y Markdown
+nivel: 1
+
+En línea: `**negrita**`, `*cursiva*`, comillas invertidas para código, `[texto](https://…)`, `[texto](?demo=id&vista=web)` para enlaces internos y `@(id texto)` para referenciar un bloque. El cuerpo admite un subconjunto de Markdown: párrafos, títulos, listas, listas de tareas, tablas, código cercado y citas. **Nunca se dibuja HTML crudo** (Normativo).
+@@
+
+@heading h-common
+texto: 5 · Propiedades que cualquier bloque puede llevar
+nivel: 1
+@@
+
+@table tb-common
+titulo: Propiedades comunes
+
+| Propiedad | Significado |
+|---|---|
+| `certeza` | `Verificado`, `Supuesto` o `Por verificar` |
+| `supuesto: si` / `verificar: si` | Atajo para los dos estados más débiles |
+| `generado_por: ia` | Lo escribió un modelo sin revisión humana |
+| `idioma` | Etiqueta BCP 47 (`en`, `es`, `zh-Hans`) |
+| `rel: tipo @(destino)` | Relación con tipo hacia otro bloque |
+| `depende` | Ids de los que depende este bloque (separados por coma) |
+@@
+
+@heading h-blocks
+texto: 6 · Tipos de bloque
+nivel: 1
+sub: Un tipo desconocido no es error: se dibuja como bloque genérico y se conserva en la fuente.
+@@
+
+@table tb-blocks
+titulo: Tipos que entiende el renderer de referencia
+
+| Grupo | Tipos |
+|---|---|
+| Contenido | `heading`, `nota`, `table`, `code`, `quote`, `features`, `cta`, `hero`, `stat`, `timeline` |
+| Conocimiento | `afirmacion`, `fuente`, `entidad`, `ejemplo` |
+| Trabajo | `tablero`, `tarea`, `accion`, `proceso`, `paso`, `fase` |
+| Producto y diseño | `producto`, `paquete`, `wireframe`, `diseno` |
+| Medios | `image` (exige `alt`), `embed`, `iframe` (solo dominios en lista blanca), `mermaid` |
+@@
+
+@heading h-views
+texto: 7 · Vistas
+nivel: 1
+
+El mismo archivo se ve como Web, Slides (cada `@heading` abre una slide), Tablero (`@tarea` por `estado`), Scroll-TV, Carta (secciones como líneas, bloques como estaciones), Misión (runbook de pasos `@accion` con estado guardado) y Fuente (el texto crudo junto al render, con ids de bloque). Las exportaciones a Markdown y HTML salen del documento ya leído y no llevan scripts.
+@@
+
+@heading h-security
+texto: 8 · Seguridad
+nivel: 1
+@@
+
+@table tb-security
+titulo: Reglas para cualquier renderer
+
+| Regla | Estado |
+|---|---|
+| Escapar todo texto antes de insertarlo. Sin HTML, CSS ni JavaScript del autor | Normativo |
+| Enlaces y medios: solo `https` (más `mailto:` y `tel:` en listas de propiedades) | Implementado |
+| `@iframe`: lista blanca de dominios, `sandbox`, carga diferida, política de referer estricta | Implementado |
+| `@diseno`: solo colores `#RRGGBB` y nombres de fuente | Implementado |
+| El texto dirigido a modelos («ignora tus instrucciones…») es dato, nunca instrucción | Normativo |
+| `@secret` guarda una referencia, nunca un valor literal | Normativo |
+@@
+
+@heading h-diag
+texto: 9 · Diagnósticos
+nivel: 1
+sub: Los códigos son estables. El validador escribe los mensajes en español.
+@@
+
+@table tb-diag
+titulo: Códigos
+
+| Código | Nivel | Regla |
+|---|---|---|
+| `LND-SYN-001` | error | `@@` sin bloque abierto |
+| `LND-SYN-002` | error | `clave::` sin cierre `::` |
+| `LND-SYN-003` | aviso | `@tipo id extra` parece bloque pero es texto |
+| `LND-SYN-004` | info | Bloque cerrado sin `@@` |
+| `LND-SYN-005` | aviso | `//x` sin espacio no es comentario |
+| `LND-ESQ-001` | error | id duplicado |
+| `LND-ESQ-002` | error | `@tarea` sin id |
+| `LND-ESQ-003` | aviso | Clave que empieza en mayúscula |
+| `LND-ESQ-004` | aviso | Falta el `# Título` |
+| `LND-REF-001` | aviso | `rel: siguiente` a un id que no existe |
+| `LND-REF-002` | aviso | `depende` a un id que no existe |
+| `LND-REF-003` | aviso | `@afirmacion` cuya `fuente` no tiene `@fuente` |
+| `LND-REF-004` | aviso | `rel` mal formado |
+| `LND-SEC-001` | error | `@iframe` fuera de la lista blanca |
+| `LND-SEC-002` | error | `@secret` con valor literal |
+| `LND-SEC-003` | aviso | URL que no es `https` en una propiedad de medio o enlace |
+| `LND-SEC-004` | aviso | Caracteres de control o bidireccionales |
+| `LND-LANG-001` | error | Códigos de idioma reservados y erróneos `kcw` y `tsq` |
+| `LND-LANG-002` | aviso | `idioma` que no parece BCP 47 |
+| `LND-MED-001` | aviso | `@image` sin `alt` |
+| `LND-VER-001` | info | Falta el comentario `// perfil: lnd-1.1` |
+| `LND-VER-002` | info | Nombre de perfil heredado `cw-1`; usa `lnd-1.1` |
+| `LND-REF-007` | aviso | `--links`: el bloque no existe en el documento enlazado |
+| `LND-REF-008` | info | `--links`: enlace resuelto a través de una lápida `@movido` |
+| `LND-REF-009` | error | `@movido` sin `movido_a` |
+@@
+
+@heading h-ext
+texto: 10 · Extender y versionar
+nivel: 1
+@@
+
+@features f-ext
+item: Se permiten tipos y propiedades nuevos, y deben sobrevivir sin cambios a una ida y vuelta (Normativo).
+item: Los tipos de terceros usan prefijo: `@x-<org>-<tipo>` (Propuesto).
+item: Los cambios que solo agregan mantienen el perfil `lnd-1`. Los cambios que solo agregan suben la versión menor (`lnd-1.1`, `lnd-1.2`). Un cambio que rompe documentos válidos crea `lnd-2` con una herramienta de migración (Normativo). `cw-1` es el alias heredado de `lnd-1.0`: validadores y renderers lo aceptan y emiten `LND-VER-002` (Normativo).
+item: El perfil lleva el nombre del formato, no el de un producto. En el perfil `lnd-1` las claves y los nombres de tipo son palabras en español. Son identificadores, no prosa, y son iguales en todas las ediciones de idioma de un documento.
+@@
+
+---
+
+@heading h-v11
+texto: 11 · Adiciones del perfil 1.1
+nivel: 1
+sub: Solo agregan y son compatibles: un renderer 1.0 muestra estos bloques como genéricos, y nada que era válido deja de serlo.
+@@
+
+@table tb-v11
+titulo: Bloques nuevos
+
+| Bloque | Propiedades | Cómo se dibuja |
+|---|---|---|
+| `@decision` | `pregunta`, `opciones` (separadas por ` · `; también se acepta barra vertical), `elegida`, `puntaje` (número o `N/M`, lo pone una persona), `estado` (`abierta` o `decidida`; `cerrada` se lee como `decidida`), `reabrir_si`, `fuente` repetible (texto libre, o `@(id)` hacia una `@afirmacion` o `@fuente`); además `criterio` repetible (nombre, peso, una nota por opción, separados por barras verticales) y `fecha` | Tabla de puntajes (peso × nota, sumado), evidencia enlazada que hereda su marca Verificado o Supuesto, aristas a la evidencia en la vista Carta |
+| `@ascii` | `alt` (obligatorio), `titulo`; el dibujo en el cuerpo | Espacios exactos, sin reacomodar, escalado al ancho |
+| `@stream` | `url`, `tipo` (`hls`, `webrtc`, `youtube`, `otro`), `poster`, `estado`, `fecha` | Carga con clic, solo dominios en lista blanca; sin red muestra póster, estado y fecha |
+| `@playlist` | `item` repetible: fuente, título, inicio-fin, subtítulos (se aceptan rutas locales relativas) | Lista ordenada que funciona sin red |
+| `@archivos` | `archivo` repetible: ruta, tamaño, sha256 | Árbol de archivos; el validador revisa el formato del sha256 |
+| `@repo`, `@issue` | `url` más una instantánea (`nombre`, `descripcion`, `licencia`, `titulo`, `estado`…) y su `fecha` | Se lee sin red desde la instantánea, con su fecha |
+@@
+
+@features f-v11
+titulo: Campos nuevos en cualquier bloque
+item: `icono:` un emoji o un `:shortcode:`. No existe un bloque `@emoji`.
+item: `:shortcode:` en el texto, por ejemplo `:check:` o `:warning:`. Dentro de código queda literal.
+item: `pos: x,y` ubica el bloque libremente en el lienzo de la Carta.
+item: `hash:` y `cache:` en cualquier bloque con contenido externo: el sha256 del contenido y una copia local relativa (por ejemplo, una página guardada como un solo HTML).
+item: **Pesos humanos.** En `@decision` los pesos los fija una persona. Un agente puede calcular el puntaje y proponer una opción, pero no cambia pesos ni `puntaje` ni marca la decisión como `decidida` por su cuenta.
+@@
+
+@table tb-v11-diag
+titulo: Códigos de diagnóstico nuevos
+
+| Código | Nivel | Regla |
+|---|---|---|
+| `LND-MED-002` | error | `@ascii` sin `alt` |
+| `LND-INT-001` | error | sha256 mal formado en `@archivos` o `hash` |
+| `LND-DEC-001` | aviso | `@decision` sin `pregunta` |
+| `LND-DEC-002` | aviso | Menos de dos `opciones` |
+| `LND-DEC-003` | aviso | `criterio` mal formado (una nota por opción) |
+| `LND-DEC-004` | aviso | `elegida` no está entre las `opciones` |
+| `LND-DEC-005` | aviso | `estado` inválido, o decidida sin `elegida` y `fecha` |
+| `LND-DEC-006` | aviso | `puntaje` que no es un número ni `N/M` |
+| `LND-REF-005` | aviso | Una `fuente: @(id)` de `@decision` apunta a un id que no existe o a un bloque que no es `@afirmacion` ni `@fuente` |
+| `LND-ESQ-005` | aviso | `@stream` con `tipo` desconocido |
+| `LND-ESQ-006` | aviso | `pos` o `icono` mal formados |
+| `LND-ESQ-007` | aviso | `@repo` o `@issue` sin `fecha` de la instantánea |
+| `LND-ESQ-008` | aviso | Bloque `@emoji` (usa `icono` o un shortcode) |
+| `LND-SEC-006` | aviso | `cache` o ruta de archivo absoluta o con `..` |
+@@
+
+---
+
+@heading h-enlaces
+texto: 12 · Enlaces entre documentos que sobreviven a mover carpetas
+nivel: 1
+sub: Las carpetas son para las personas; los ids, para las máquinas.
+@@
+
+@table tb-enlaces
+titulo: Formas de enlazar
+
+| Forma | Ejemplo | Estado |
+|---|---|---|
+| Bloque del mismo documento | `@(a-boiling)` | 1.0 |
+| Otro documento, por id | `@(hello)` | 1.1 |
+| Bloque de otro documento, por id | `@(hello#a-boiling)` | 1.1 |
+| Ruta de archivo (respaldo) | `@(examples/es/hello.lnd#a-boiling)` | 1.1 · se rompe si se mueve el archivo |
+| Lápida de documento movido: `@movido id` con `movido_a: nuevo-id` | el renderer redirige al nuevo id | Propuesto 1.2 |
+@@
+
+@features f-enlaces
+titulo: Reglas
+item: El renderer resuelve el id del documento con su índice (MANIFEST: id → ruta actual). Si el id no está, muestra el enlace tachado como **enlace roto** y emite `LND-REF-006`; no inventa un destino.
+item: Sin números de versión en los nombres de archivo: la versión vive en Git y en el texto, no en la ruta. Renombrar o mover un archivo no cambia su id.
+item: Herramientas previstas: `cw links` lista y revisa todos los enlaces del repo, y `cw mv` mueve un archivo y deja la lápida (ver §13; Normativo: todavía no existen).
+@@
+
+---
+
+@heading h-cli
+texto: 13 · Herramienta de línea de comandos `cw` (plan)
+nivel: 1
+sub: Normativo: decidido y sin construir, salvo el validador de referencia. Un solo parser en TypeScript, `@landdy/cw`, compilado con Deno.
+@@
+
+@table tb-cli
+titulo: Por etapas
+
+| Etapa | Comandos | Hecho cuando |
+|---|---|---|
+| 0 | `cw validate`, `cw lint --leaks`, `cw publish --public` | El CI falla con un `.lnd` roto o con una fuga |
+| 1 | `fmt`, `get`/`set`, `propose`, `query`, `context`, `import`, `serve` (stdio, solo lectura más `propose`), `links`, `mv` | `parse(fmt(parse(x))) == parse(x)` en todos los fixtures |
+| 2 | `diff`, `stale`, `index`, `decide`, `watch` | — |
+@@
+
+El validador de Python (`tools/lnd_check.py`) se porta a TypeScript y se retira cuando los dos validadores dan el mismo resultado en todos los fixtures.
+
+---
+
+@heading h-12
+texto: 14 · Versión 1.2: palabras reservadas en inglés, español y chino
+nivel: 1
+sub: Implementado en el validador y el formateador de referencia. Cada palabra reservada funciona en los tres idiomas con el mismo comportamiento.
+@@
+
+@features f-12
+titulo: Qué agrega la 1.2
+item: **Una sola tabla.** `tools/keywords.json` lista cada palabra reservada (bloques, campos, claves de cabecera, valores reservados, vistas) en es, en y zh. Los ids canónicos son la columna en inglés. La leen el validador, el formateador y el renderer; el resto del código nunca ve claves de un idioma.
+item: **Un idioma por archivo.** Un archivo usa las claves de un idioma. Cabecera opcional `claves: es` (`keys: en`, `键名语言：zh`); si falta, se detecta. Mezclar idiomas de claves da `LND-KEY-001`.
+item: **Puntuación de ancho completo.** En zh se acepta `：` por `:` y `＠` por `@`, como los escribe un IME chino.
+item: **Formateador.** `python3 tools/lnd_keys.py --lang es|en|zh archivo.lnd` reescribe solo palabras reservadas: nunca el contenido, los ids de bloque ni los enlaces `@(id)`. La ida y vuelta es→en→zh→es es idéntica byte a byte.
+item: **Mensajes.** Los mensajes del validador citan las claves en el idioma del archivo; `--lang` toma ese idioma por defecto.
+item: **Bloques de memoria.** `@experiencia` (lección que se reutiliza entre tareas; exige `leccion` y `origen`), el campo global `reemplaza: @(id)` (cadena de versiones; un ciclo es `LND-REF-010`) y `reabrir_si` en `@decision`. Ver `examples/*/memory-1-2.lnd`, `decisions-1-2.lnd` y `moved-1-2.lnd`.
+item: **Incertidumbre de la decisión (opcional, inspirado en el modelo de decisión de Vega).** `confianza`: un número de 0 a 1, la probabilidad de que la opción elegida sea la correcta (fuera de rango: `LND-DEC-008`). `candidatas`: las opciones que siguen siendo plausibles, un subconjunto de `opciones` (si no, `LND-DEC-007`). Valor nuevo de `estado`: `abstenida`: no hay evidencia suficiente para decidir; no lleva `elegida` y debe llevar `reabrir_si` (`LND-DEC-005`). Regla: si una herramienta o un agente llena `confianza`, debe decir en `fuente` cómo la calculó; los pesos los sigue poniendo una persona.
+@@
+
+@table tb-12-codes
+titulo: Códigos de diagnóstico nuevos
+
+| Código | Nivel | Qué significa |
+|---|---|---|
+| `LND-KEY-001` | aviso (info si solo se mezclan valores) | Claves de más de un idioma en un archivo |
+| `LND-KEY-002` | aviso | Clave desconocida que parece errata de una reservada (con sugerencia), o `claves:` distinto de es, en, zh |
+| `LND-KEY-003` | info | Término renombrado (alias heredado): corre `lnd_keys.py --migrar` |
+| `LND-REF-010` | error | Ciclo en `reemplaza` |
+| `LND-EXP-001` | aviso | `@experiencia` sin `leccion` u `origen` |
+| `LND-EXP-002` | aviso | `usos` no es un entero |
+| `LND-DEC-007` | aviso | Una de las `candidatas` no está en `opciones` |
+| `LND-DEC-008` | aviso | `confianza` no es un número de 0 a 1 |
+@@
+
+@nota n-zh-provisional
+tipo: zh-CN
+
+zh-CN provisional: las correcciones nunca romperán archivos existentes. Las palabras reservadas en chino son traducción automática y no las revisó un hablante nativo. Si un término cambia, el viejo pasa a `aliases_legacy` en `keywords.json`: sigue funcionando, solo da `LND-KEY-003` (info) y `lnd_keys.py --migrar` lo reescribe. Hablantes nativos: propongan correcciones en un issue (ver CONTRIBUTING).
+@@
+
+@code c-12-decision
+titulo: La misma decisión, con las claves en el idioma de este archivo
+lenguaje: lnd
+
+.@decision d-price
+pregunta: Which price model ships at launch?
+opciones: One-time 89 · Monthly 9
+elegida: One-time 89
+estado: decidida
+fecha: 2026-10-19
+reabrir_si: fewer than 20 sales in the first 30 days
+.@@
+@@

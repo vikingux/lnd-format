@@ -1,0 +1,109 @@
+# Perfil 1.1 · todos los bloques nuevos en un archivo
+Una decisión con criterios ponderados y evidencia, un diagrama ASCII, un stream, una lista de reproducción, una lista de archivos, una instantánea de repositorio y de issue, y los campos globales nuevos `icono`, `pos`, `hash` y `cache`. Ábrelo en Web, Carta y Fuente. :bulb:
+
+// perfil: lnd-1.1 · ámbito: ejemplo · vistas sugeridas: web, carta, fuente
+// perfil 1.1: solo agrega; un renderer viejo muestra estos bloques como genéricos
+
+---
+
+@heading h-decision
+texto: Una decisión con evidencia
+nivel: 1
+icono: :scale:
+@@
+
+@decision d-diagrams
+titulo: Formato de diagramas para la documentación
+pregunta: ¿Qué formato usamos para los diagramas de la documentación?
+opciones: Mermaid · ASCII · PNG
+criterio: Se compara en Git | 3 | 3 | 3 | 0
+criterio: Se lee sin renderer | 2 | 1 | 3 | 3
+criterio: Se dibuja como diagrama real | 2 | 3 | 1 | 3
+fuente: @(a-diff)
+fuente: @(a-offline)
+elegida: Mermaid
+estado: decidida
+fecha: 2026-10-19
+reabrir_si: el renderer sin red deja de dibujar Mermaid
+icono: :scale:
+pos: 420,560
+
+Los pesos los fijó una persona. Un agente calculó el puntaje y propuso la opción; la persona la aprobó.
+@@
+
+@afirmacion a-diff
+texto: Mermaid y ASCII son texto plano, así que un pull request muestra el cambio exacto.
+certeza: Verificado
+fuente: f-git
+@@
+
+@afirmacion a-offline
+texto: La mayoría de quienes lean abrirá la documentación con un renderer que dibuja Mermaid.
+certeza: Supuesto
+@@
+
+@fuente f-git
+titulo: Cualquier `git diff` de un archivo de texto
+tipo: observación
+@@
+
+---
+
+@heading h-media
+texto: Dibujos de texto, streams y medios
+nivel: 1
+@@
+
+@ascii as-flow
+titulo: Escribir, validar, revisar
+alt: Tres cajas en fila unidas por flechas: escribir .lnd, luego lnd_check, luego pull request.
+
++-----------+     +-----------+     +--------------+
+| escribir  | --> | lnd_check | --> | pull request |
+| .lnd      |     | 0 errores |     | revisión     |
++-----------+     +-----------+     +--------------+
+@@
+
+@stream st-live
+titulo: Demo en vivo (ejemplo)
+url: https://example.org/live/index.m3u8
+tipo: hls
+estado: no está en vivo
+fecha: 2026-10-19
+icono: :video:
+@@
+
+@playlist pl-1
+titulo: Grabaciones locales
+item: media/intro.mp4 | Introducción | 00:00-01:30 | media/intro.vtt
+item: media/views.mp4 | Nueve vistas de un archivo | 00:00-02:10
+@@
+
+---
+
+@heading h-files
+texto: Archivos, repositorios e issues
+nivel: 1
+@@
+
+@archivos ar-1
+titulo: Archivos que cita este ejemplo
+archivo: LICENSE | 11358 B | cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30
+archivo: examples/en/hello.lnd | 614 B | 75d7e621232daaa3238b73a2c94d797d61d5d1ecbe5b4b345cb578124bd107b1
+@@
+
+@repo rp-mermaid
+url: https://github.com/mermaid-js/mermaid
+nombre: mermaid-js/mermaid
+licencia: MIT
+fecha: 2026-10-19
+icono: :link:
+@@
+
+@issue is-1
+url: https://example.org/issues/1
+titulo: Issue de ejemplo (ficticio)
+estado: abierto
+fecha: 2026-10-19
+cache: cache/issue-1.html
+@@
