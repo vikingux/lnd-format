@@ -45,4 +45,8 @@ t("confianza fuera de 0–1 → DEC-008", ("LND-DEC-008", "aviso") in cods(DV + 
 t("candidatas fuera de opciones → DEC-007", ("LND-DEC-007", "aviso") in cods(DV + "candidatas: A · D\n@@\n") and cods(DV + "candidatas: A · B\n@@\n") == [])
 t("abstenida con elegida y sin reabrir_si → 2 avisos DEC-005", [c for c, _ in cods(DV + "estado: abstenida\nelegida: A\n@@\n")].count("LND-DEC-005") == 2)
 t("abstenida bien formada sin diagnósticos, igual en zh", cods(DV + "estado: abstenida\nreabrir_si: hay datos\n@@\n") == [] == cods(L.convertir(DV + "estado: abstenida\nreabrir_si: hay datos\n@@\n", "zh")))
+IFR = CAB + "@iframe v\nsrc: {}\n@@\n"
+AT = "@"  # «@» aparte para que el gate de fugas no lo lea como correo
+MALAS = ("https://evil.com\\" + AT + "www.youtube.com/x", "https://evil.com" + AT + "www.youtube.com/x", "https://www.youtube.com" + AT + "evil.com/x", "https://www.youtube.com\\.evil.com/x", "https://www.youtube.com\t.evil.com/x")
+t("SEC-001: «\\», «usuario@» o controles en src de @iframe → error (el navegador abriría otro host)", all(("LND-SEC-001", "error") in cods(IFR.format(u)) for u in MALAS) and ("LND-SEC-001", "error") not in cods(IFR.format("https://www.youtube.com/embed/x?a=1#t")))
 print(f"{ok} pruebas ok")

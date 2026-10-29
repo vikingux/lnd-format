@@ -306,6 +306,8 @@ def check(src, kw=None):
         if tipo in ("iframe",) and P.get("src"):
             try:
                 u = urlparse(P["src"]); ok = u.scheme == "https" and u.hostname in IFRAME_OK
+                # como el navegador (WHATWG): «\» cuenta como «/» y «usuario@host» cambia el host → se rechazan, igual que los controles
+                ok = ok and not re.search(r"[\\\x00-\x1f\x7f]", P["src"]) and "@" not in u.netloc
             except Exception:
                 ok = False
             if not ok:
